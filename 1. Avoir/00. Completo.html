@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hola Mundo Formularios</title>
+</head>
+<body bgcolor=”#2980B9″ >
+<center>
+
+
+<h2 id="inicio"></h2>
+
+
+<h2 id="iniciouno"></h2>
+
+<input id="myInput" value="">
+<button id="myBtn" onclick="palabra()">Button</button>
+
+
+<h2 id="respuesta"></h2> 
+
+
+<input type="button" value="Palabras mal escritas" onclick="genera_tabla()">
+
+<script > 
+
+var vector = [ 
+
+
+["j'ai","yo tengo"],
+["tu as","tú tienes"],
+["il a","él tiene"],
+["nous avons","nosotros tenemos"],
+["vous avez","vosotros tenéis"],
+["ils ont","ellos tienen"],
+
+["j'avais","yo tenía"],
+["tu avais","tú tenías"],
+["il avait","él tenía"],
+["nous avions","nosotros teníamos"],
+["vous aviez","vosotros teníais"],
+["ils avaient","ellos tenían"],
+
+["j'aurai","yo tendré"],
+["tu auras","tú tendrás"],
+["il aura","él tendrá"],
+["nous aurons","nosotros tendremos"],
+["vous aurez","vosotros tendréis"],
+["ils auront","ellos tendrán"],
+
+["j'ai eu","yo he tenido"],
+["tu as eu","tú has tenido"],
+["il a eu","él ha tenido"],
+["nous avons eu","nosotros hemos tenido"],
+["vous avez eu","vosotros habéis tenido"],
+["ils ont eu","ellos han tenido"],
+
+["j'avais eu","yo había tenido"],
+["tu avais eu","tú habías tenido"],
+["il avait eu","él había tenido"],
+["nous avions eu","nosotros habíamos tenido"],
+["vous aviez eu","vosotros habíais tenido"],
+["ils avaient eu","ellos habían tenido"],
+
+["j'aurai eu","yo habré tenido"],
+["tu auras eu","tú habrás tenido"],
+["il aura eu","él habrá tenido"],
+["nous aurons eu","nosotros habremos tenido"],
+["vous aurez eu","vosotros habréis tenido"],
+["ils auront eu","ellos habrán tenido"],
+
+["que j'aie","que yo tenga"],
+["que tu aies","que tú tengas"],
+["qu'il ait","que él/ella tenga"],
+["que nous ayons","que nosotros tengamos"],
+["que vous ayez","que vosotros tengáis"],
+["qu'ils aient","que ellos tengan"],
+
+["que j'aie eu","que yo haya tenido"],
+["que tu aies eu","que tú hayas tenido"],
+["qu'il ait eu","que él haya tenido"],
+["que nous ayons eu","que nosotros hayamos tenido"],
+["que vous ayez eu","que vosotros hayáis tenido"],
+["qu'ils aient eu","que ellos hayan tenido"],
+
+["je aurais","yo tendría"],
+["tu aurais","tú tendrías"],
+["il aurait","él tendría"],
+["nous aurions","nosotros tendríamos"],
+["vous auriez","vosotros tendríais"],
+["ils auraient","ellos tendrían"],
+
+["j'aurais eu","yo habría tenido"],
+["tu aurais eu","tú habrías tenido"],
+["il aurait eu","él habría tenido"],
+["nous aurions eu","nosotros habríamos tenido"],
+["vous auriez eu","vosotros habríais tenido"],
+["ils auraient eu","ellos habrían tenido"]
+
+]
+
+//////////////////// Función para generar una secuencia de numeros
+function makearray(num1, num2){
+  var vector = []
+  for (var i = num1; i <= num2; i++) {
+    vector = vector.concat(i);
+  }
+  return vector;
+};
+////////////////// Función para desordenar números
+function desordenar(array){
+  array = array.sort(function() {return Math.random() - 0.5});
+  return array;
+};
+
+/////////////// Pruebas
+var secuencia = makearray(0,vector.length-1);
+var sd = desordenar(secuencia);
+console.log(sd);
+//////////////
+
+var i=0;
+var errores = 0;
+var mal =[];
+
+document.getElementById("inicio").innerHTML = vector[sd[i]][1];
+
+function palabra() {
+
+  var x = document.getElementById("myInput").value;
+
+  if (x == vector[sd[i]][0]) {     //// correcto
+  x = "Correcto";
+  i= i +1;
+  } else {                    //// Incorrecto
+               x = "Incorrecto, es " + vector[sd[i]][0];
+               errores ++;
+               mal = mal.concat(vector[sd[i]]);
+               console.log(mal);
+               console.log(mal[sd[i]])
+               console.log(mal.length)
+
+  }
+  document.getElementById("respuesta").innerHTML = x;
+
+  i= i;
+
+  ////// Dice que has terminado
+
+  if (i<vector.length) { document.getElementById("iniciouno").innerHTML = vector[sd[i]][1]; }
+  else document.getElementById("respuesta").innerHTML = "Terminaste, tuviste " + errores + " errores";
+};
+
+
+///////////////////////////////
+
+var input = document.getElementById("myInput");
+
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("myBtn").click();
+  }
+});
+////////////////////////////// Crear tabla
+function genera_tabla() {
+                
+                var aux = 0;
+  // Obtener la referencia del elemento body
+  var body = document.getElementsByTagName("body")[0];
+  // Crea un elemento <table> y un elemento <tbody>
+  var tabla   = document.createElement("table");
+  var tblBody = document.createElement("tbody");
+  // Crea las celdas
+  for (var i = 0; i < (mal.length/2)  ; i++) {
+    // Crea las hileras de la tabla
+    var hilera = document.createElement("tr");
+
+    for (var j = 0; j < 2; j++) {
+      // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+      // texto sea el contenido de <td>, ubica el elemento <td> al final
+      // de la hilera de la tabla
+
+      var celda = document.createElement("td");
+      var textoCelda = document.createTextNode(mal[aux]);
+      celda.appendChild(textoCelda);
+      hilera.appendChild(celda);
+      aux++;
+    }
+    // agrega la hilera al final de la tabla (al final del elemento tblbody)
+    tblBody.appendChild(hilera);
+
+  }
+  // posiciona el <tbody> debajo del elemento <table>
+  tabla.appendChild(tblBody);
+  // appends <table> into <body>
+  body.appendChild(tabla);
+  // modifica el atributo "border" de la tabla y lo fija a "2";
+  tabla.setAttribute("border", "10");
+}
+
+</script>
+ 
+</center>
+</body>
+</html>
